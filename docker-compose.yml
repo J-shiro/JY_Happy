@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    environment:
+    # 强制 Webpack 使用旧的加密方式兼容 OpenSSL
+      - NODE_OPTIONS=--openssl-legacy-provider
+    build:
+      context: ./frontend/appli
+    ports:
+      - "3000:3000"
