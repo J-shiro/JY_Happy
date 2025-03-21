@@ -14,8 +14,10 @@ brew install node
 node -v # v23.9.0
 npm install -g npm@11.1.0
 npm -v # 11.1.0
-cd appli/
-npx create-react-app .
+# Next.js
+npx create-next-app@latest appli --typescript --eslint --app
+cd appli
+npm install tailwindcss @tailwindcss/postcss postcss # Tailwind CSS
 ```
 
 2. mac docker desktop 设置
