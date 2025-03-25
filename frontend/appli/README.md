@@ -40,5 +40,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ```bash
 npm install @shadcn/ui
 npx shadcn@latest init
-npx shadcn@latest add xxx # add to src/components/ui/button.tsx
+npx shadcn@latest add xxx # add to src/components/ui/xxx.tsx
 ```

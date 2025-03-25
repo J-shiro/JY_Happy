@@ -17,7 +17,7 @@ npm -v # 11.1.0
 # Next.js
 npx create-next-app@latest appli --typescript --eslint --app
 cd appli
-npm install tailwindcss @tailwindcss/postcss postcss # Tailwind CSS
+npm install tailwindcss @tailwindcss/postcss postcss autoprefixer # Tailwind CSS
 ```
 
 2. mac docker desktop 设置
