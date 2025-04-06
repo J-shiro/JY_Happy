@@ -1,11 +1,44 @@
 services:
+  postgres:
+    image: postgres:latest
+    # 异常退出时自动重启
+    restart: always
+    environment:
+      - POSTGRES_DB=jy_happy
+      - POSTGRES_USER=jy
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    volumes:
+      # 本地目录挂载到容器数据目录, 实现数据持久化
+      - /Users/jshiro/Usually/github_local/JY_Happy/db/postgres_data:/var/lib/postgresql/data
+      # 初始化 SQL 文件，Postgres 容器自动执行 docker-entrypoint-initdb.d 中 .sql 文件
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      # 健康检查, pg_isready 检查数据库是否就绪: 4s 检查一次, 重试 3 次, 超时 2s
+      test: ["CMD", "pg_isready", "-U", "jy", "-d", "jy_happy"]
+      interval: 4s
+      retries: 3
+      timeout: 2s
+
   backend:
     build:
       context: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=jy
+      - DB_PASSWORD=123456
+      - DB_NAME=jy_happy
     ports:
       - "8080:8080"
 
   frontend:
+    depends_on:
+      - backend
     environment:
     # 强制 Webpack 使用旧的加密方式兼容 OpenSSL
       - NODE_OPTIONS=--openssl-legacy-provider

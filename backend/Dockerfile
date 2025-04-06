@@ -11,7 +11,7 @@ RUN go mod download
 # 当前目录文件复制到 /app/backend
 COPY . .
 
-RUN go build -o main .
+RUN go build -o main ./cmd/server/main.go
 
 EXPOSE 8080
 

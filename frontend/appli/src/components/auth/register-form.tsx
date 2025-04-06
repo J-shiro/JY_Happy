@@ -1,15 +1,15 @@
-// 用户登录表单组件
+// 用户注册表单组件, 从登录拷贝
 "use client";
 
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
-import { login } from "@/actions/login"
-import { useTransition, useState } from "react"; // 管理组件的状态和异步任务的过渡效果
+import { register } from "@/actions/register"
+import { useTransition, useState } from "react";
 
 import {
     Form,
@@ -22,33 +22,31 @@ import {
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 
-export const LoginForm = () => {
-    // 定义状态变量及状态更新函数: 可为 string 或 undefined, 初始化为空
+export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
 
-    // 低优先级更新防止 UI 卡顿
     const [isPending, startTransition] = useTransition();
 
     // react-hook-form 表单管理 hook
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof RegisterSchema>>({
+        resolver: zodResolver(RegisterSchema),
         defaultValues: { // 默认值为空
             email: "",
             password: "",
+            name: "",
         },
     })
     
-    // z.infer 自动解析 LoginSchema 类型
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    // z.infer 自动解析 RegisterSchema 类型
+    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         setError("");
         setSuccess("");
 
-        // 低优先级更新
         startTransition(() => {
-            login(values)
+            register(values)
             .then((data) => {
-                setError(data?.error); // 可选链 null 或 undefined 返回 undefined
+                setError(data?.error);
                 setSuccess(data?.success);
             });
         });
@@ -56,10 +54,10 @@ export const LoginForm = () => {
 
     return (
         <CardWrapper
-            headerLabel="欢 迎 回 来"
-            headerTitle="请 登 录 您 的 账 户"
-            backButtonLabel="没有账号?立即注册"
-            backButtonHref="/auth/register"
+            headerLabel="创 建 账 号"
+            headerTitle="欢 迎 来 到 JY-Happy"
+            backButtonLabel="已经拥有账号?直接登录"
+            backButtonHref="/auth/login"
             showSocial>
             {/* 等价于 <Form form={form}> */}
             <Form {...form}>
@@ -67,6 +65,25 @@ export const LoginForm = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6">
                         <div className="space-y-4">
+                        <FormField
+                                control={form.control} // 绑定表单控制器
+                                name="name"
+                                // 渲染
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>用 户 名</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                disabled={isPending}
+                                                placeholder="faker"
+                                            />
+                                        </FormControl>
+                                        {/* 自动显示 react-hook-form 校验错误 */}
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control} // 绑定表单控制器
                                 name="email"
@@ -76,8 +93,8 @@ export const LoginForm = () => {
                                         <FormLabel>邮 箱</FormLabel>
                                         <FormControl>
                                             <Input
-                                                {...field} // ...field 展开对象属性，绑定到 Input
-                                                disabled={isPending} // true 时，输入框 Input 禁用
+                                                {...field}
+                                                disabled={isPending}
                                                 placeholder="hello.world@example.com"
                                                 type="email"
                                             />
@@ -109,7 +126,7 @@ export const LoginForm = () => {
                         <FormError message={error} />
                         <FormSuccess message={success} />
                         <Button className="w-full" type="submit" disabled={isPending}>
-                                登 录
+                                注 册
                         </Button>
                 </form>
             </Form>

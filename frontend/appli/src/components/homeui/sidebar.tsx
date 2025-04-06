@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 import { useState } from "react"; // 创建组件本地状态
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Home, FileText, MessageSquare, ShoppingBag, Headset, Menu } from "lucide-react"; // 图标
+import { Home, FileText, MessageSquare, ShoppingBag, Headset, Menu, Car } from "lucide-react"; // 图标
 
 const menuItems = [
   { name: "共享文档", href: "/dashboard/docs", icon: FileText },
   { name: "社区", href: "/dashboard/community", icon: Home },
   { name: "聊天", href: "/dashboard/chat", icon: MessageSquare },
+  { name: "外卖", href: "/dashboard/takeout", icon: Car },
   { name: "商城", href: "/dashboard/mall", icon: ShoppingBag },
   { name: "个人", href: "/personal", icon: Headset }
 

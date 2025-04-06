@@ -1,12 +1,14 @@
-// 登录界面头部组件: 包含 logo 和标题
+// 登录及注册界面头部组件: 包含 logo 和标题
 import Image from "next/image";
 
 interface HeaderProps {
     label: string;
+    title: string; // 登录标题
 }
 
 export const Header = ({
-    label
+    label,
+    title
 }: HeaderProps) => {
     return (
         <div className="flex w-full flex-col gap-y-2 justify-between items-center">
@@ -18,7 +20,7 @@ export const Header = ({
                       src="/images/logo.png"
                     />
             <h2 className="mt-6 text-center text-4xl font-extrabold tracking-tight text-gray-900">
-                请 登 录 您 的 账 户
+                {title}
             </h2>
             <p className="text-muted-foreground text-sm">
                 {label}

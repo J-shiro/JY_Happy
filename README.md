@@ -5,7 +5,7 @@
 ```bash
 # backend
 cd backend
-go mod init github.com/J-shiro/JY_Happy
+go mod init backend # github.com/J-shiro/JY_Happy
 go version # go version go1.24.0 darwin/arm64
 
 # frontend
@@ -48,6 +48,30 @@ docker-compose down # 关闭所有容器
 # 查看
 docker-compose ps
 docker-compose logs -f # 日志
+
+# 删除无用容器、网络、悬挂镜像和构建缓存
+docker system prune -a --volumes
+```
+
+5. 数据库
+```bash
+# 安装
+brew install postgresql
+postgres --version 
+# postgres (PostgreSQL) 14.17 (Homebrew)
+brew services start postgresql # 开启
+brew services stop postgresql # 关闭
+brew services list # 查看服务启动状态
+psql postgres # 连接 PostgreSQL
+
+
+CREATE USER jy WITH PASSWORD '123456'; # 创建用户
+CREATE DATABASE JY_HAPPY OWNER jy; # 创建数据库
+GRANT ALL PRIVILEGES ON DATABASE JY_HAPPY to jy; # 授权
+psql -U jy -d jy_happy # 本地连接数据库
+\dt # 查看表
+\d xxtable # 查看某个表的结构
+# 使用 pgAdmin 来可视化数据库
 ```
 
 ## 记录
